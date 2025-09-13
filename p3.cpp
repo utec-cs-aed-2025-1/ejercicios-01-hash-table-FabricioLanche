@@ -70,7 +70,6 @@ void connectLists(ListNode* listA, ListNode* listB, int intersectVal) {
     }
 }
 
-// TODO: implementar el algoritmo para encontrar la intersección de dos listas
 ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
     if (!headA || !headB) return nullptr;
     while(headB != nullptr){
@@ -93,7 +92,6 @@ void testIntersection(const vector<int>& listA, const vector<int>& listB,
     ListNode* headA = createList(listA);
     ListNode* headB = createList(listB);
     
-    // crear interseccion 
     if (intersectVal != -1) {
         connectLists(headA, headB, intersectVal);
     }
@@ -104,7 +102,6 @@ void testIntersection(const vector<int>& listA, const vector<int>& listB,
     printList(headB);
     cout << "\n";
     
-    // encontrar interseccion
     ListNode* intersection = getIntersectionNode(headA, headB);
     
     if (intersection) {
