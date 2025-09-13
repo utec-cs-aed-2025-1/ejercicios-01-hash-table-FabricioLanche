@@ -218,3 +218,30 @@ public:
        delete[] bucket_sizes;
     }
 };
+
+template<>
+void ChainHash<string, vector<int>>::set(string key, vector<int> value) {
+    if (fillFactor() > maxFillFactor) rehashing();
+
+    size_t hashcode = getHashCode(key);
+    int index = hashcode % this->capacity;
+
+    Node* current = this->array[index];
+    while (current != nullptr) {
+        if (current->key == key) {
+            current->value.push_back(value[0]);  
+            return;
+        }
+        current = current->next;
+    }
+
+    Node* newNode = new Node(key, value, hashcode);
+    newNode->next = this->array[index];
+    this->array[index] = newNode;
+
+    this->bucket_sizes[index]++;
+    if (this->bucket_sizes[index] == 1) {
+        this->usedBuckets++;
+    }
+    this->nsize++;
+}

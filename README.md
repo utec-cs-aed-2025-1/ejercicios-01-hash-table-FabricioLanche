@@ -59,10 +59,15 @@ Liberar toda la memoria utilizada.
 ## Resolver ejercicios:
 - **P1:** Cargar datos desde CSV y mostrar la distribución en buckets. Implementar los iteradores `begin()` y `end()` para recorrer elementos de cada bucket específico.
 
-![img.png](img.png)
+![p1_image.png](p1_image.png)
 
 - **P2:** Implementar algoritmo "Bag of Words" usando tabla hash. Crear un diccionario que mapee cada palabra a los índices de documentos donde aparece.
+
+![p2_image.png](p2_image.png)
+
 - **P3:** Resolver el problema de intersección de listas enlazadas usando tabla hash. Implementar `connectLists()` para crear intersecciones y `getIntersectionNode()` para encontrarlas eficientemente.
+
+![p3_image.png](p3_image.png)
 
 ## Compilación y Ejecución
 ```bash
