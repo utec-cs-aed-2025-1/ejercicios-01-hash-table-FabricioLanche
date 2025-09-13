@@ -3,24 +3,21 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
-#include "chainhash_sol.h"
+#include "chainhash.h"
 
 using namespace std;
 
-// convertir string a minusculas (por uniformidad)
 string toLowerCase(string str) {
     transform(str.begin(), str.end(), str.begin(), ::tolower);
     return str;
 }
 
-// descomponer un string en palabras
 vector<string> tokenize(const string& text) {
     vector<string> words;
     stringstream ss(text);
     string word;
     
     while (ss >> word) {
-        // Remover signos de puntuacion (por si acaso)
         word.erase(remove_if(word.begin(), word.end(), 
                    [](char c) { return !isalnum(c); }), word.end());
         
@@ -31,18 +28,23 @@ vector<string> tokenize(const string& text) {
     return words;
 }
 
-// TODO: Implementar el algoritmo Bag of Words
 ChainHash<string, vector<int>> bagOfWords(const vector<string>& documentos) {
-    ChainHash<string, vector<int>> result(13);     
-    // TODO: Implementar algoritmo aquí    
+    ChainHash<string, vector<int>> result(13);
+    vector<string> tokens;
+    for (size_t i = 0; i < documentos.size(); i++) {
+        tokens = tokenize(documentos[i]);
+        for (auto token: tokens){
+            vector<int> index_appear;
+            index_appear.push_back(i);
+            result.set(token, index_appear);
+        }
+    }
     return result;
 }
 
-// Función para mostrar los resultados
 void printBagOfWords(ChainHash<string, vector<int>>& bow) {
     cout << "{\n";
     
-    // Recorrer todos los buckets para mostrar las palabras
     for (int i = 0; i < bow.bucket_count(); i++) {
         if (bow.bucket_size(i) > 0) {
             for (auto it = bow.begin(i); it != bow.end(i); ++it) {

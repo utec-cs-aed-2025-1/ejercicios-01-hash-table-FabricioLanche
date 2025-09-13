@@ -11,7 +11,8 @@ struct ListNode {
     ListNode(int x) : val(x), next(nullptr) {}
 };
 
-// crear una lista desde un vector
+ChainHash<ListNode*, ListNode*> hash_table(13);
+
 ListNode* createList(const vector<int>& values) {
     if (values.empty()) return nullptr;
     
@@ -26,7 +27,6 @@ ListNode* createList(const vector<int>& values) {
     return head;
 }
 
-// imprimir una lista
 void printList(ListNode* head, int maxNodes = 10) {
     ListNode* current = head;
     int count = 0;
@@ -42,7 +42,6 @@ void printList(ListNode* head, int maxNodes = 10) {
     cout << "]";
 }
 
-// encontrar un nodo por valor en una lista
 ListNode* findNode(ListNode* head, int value) {
     while (head) {
         if (head->val == value) return head;
@@ -51,16 +50,38 @@ ListNode* findNode(ListNode* head, int value) {
     return nullptr;
 }
 
-// TODO: implementar la conexión de las listas en el nodo con valor intersectVal
-// Si intersectVal no se encuentra, las listas permanecen separadas   
 void connectLists(ListNode* listA, ListNode* listB, int intersectVal) {
-    //TODO: implemente aqui
+    hash_table.~ChainHash();
+    new (&hash_table) ChainHash<ListNode*, ListNode*>(13);
+
+    ListNode* temp = listA;
+    while(temp != nullptr){
+        hash_table.set(temp, temp);
+        temp = temp->next;
+    }
+    
+    if (intersectVal != -1) {
+        ListNode* intersect_node_B = findNode(listB, intersectVal);
+        ListNode* intersect_node_A = findNode(listA, intersectVal);
+        
+        if (intersect_node_A && intersect_node_B) {
+            hash_table.set(intersect_node_B, intersect_node_A);
+        }
+    }
 }
 
-
-// TODO: implementar el algoritmo para encontrar la intersección de dos listas
 ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-    // TODO: implemente aqui
+    if (!headA || !headB) return nullptr;
+    while(headB != nullptr){
+        if (hash_table.contains(headB)) {
+            try {
+                return hash_table.get(headB);
+            } catch (...) {
+                return headB;
+            }
+        }
+        headB = headB->next;
+    }
     return nullptr;
 }
 
@@ -71,7 +92,6 @@ void testIntersection(const vector<int>& listA, const vector<int>& listB,
     ListNode* headA = createList(listA);
     ListNode* headB = createList(listB);
     
-    // crear interseccion 
     if (intersectVal != -1) {
         connectLists(headA, headB, intersectVal);
     }
@@ -82,7 +102,6 @@ void testIntersection(const vector<int>& listA, const vector<int>& listB,
     printList(headB);
     cout << "\n";
     
-    // encontrar interseccion
     ListNode* intersection = getIntersectionNode(headA, headB);
     
     if (intersection) {

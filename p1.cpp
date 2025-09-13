@@ -2,7 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include "chainhash_base.h"
+#include "chainhash.h"
 
 using namespace std;
 
@@ -19,7 +19,6 @@ int main(){
 
     for(int i=0;i<hash.bucket_count();i++){
         cout<<"Bucket #"<<i<<" contains "<<hash.bucket_size(i)<<" elements:";
-        //usar el forward_list del stl
         for(auto it = hash.begin(i); it != hash.end(i); ++it)
             cout<<"["<<(*it).key<<":"<<(*it).value<<"] ";
         cout<<endl;
